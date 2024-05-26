@@ -1,0 +1,32 @@
+name: ModOrganizer2 code formatting check
+description: Check code formatting for ModOrganizer 2 plugins
+
+inputs:
+  check-path:
+    description: 'The path to the directory you want to check for correct C/C++/Protobuf formatting. Default is the full repository.'
+    required: false
+    default: '.'
+  exclude-regex:
+    description: 'A regex to exclude files or directories that should not be checked. Default is empty.'
+    required: false
+    default: ''
+  fallback-style:
+    description: 'The fallback style for clang-format if no .clang-format file exists in your repository.'
+    required: false
+    default: 'llvm'
+  include-regex:
+    description: 'A regex to override the C/C++/Protobuf/CUDA filetype regex. that should be checked. Default results in the regex defined in `check.sh`.'
+    required: false
+    default: ''
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run clang-format
+      uses: jidicula/clang-format-action@v4.11.0
+      with:
+        clang-format-version: "17"
+        check-path: ${{ inputs.check-path }}
+        exclude-regex: ${{ inputs.exclude-regex }}
+        fallback-style: ${{ inputs.fallback-style }}
+        include-regex: ${{ inputs.include-regex }}
